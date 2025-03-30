@@ -6,16 +6,38 @@
 <div class="container fade-in">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-exclamation-triangle text-warning display-1 mb-4"></i>
-                    <h1 class="text-danger mb-4">Error</h1>
-                    <h2 class="h4 text-muted mb-4">An error occurred while processing your request.</h2>
+            <div class="card shadow-sm border-danger mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Error
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-danger mb-3">An error occurred while processing your request.</h2>
 
-                    @if (Model?.ShowRequestId ?? false)
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+
+                    @if (Model.ShowRequestId)
                     {
                         <div class="alert alert-info">
-                            <strong>Request ID:</strong> <code>@Model?.RequestId</code>
+                            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ExceptionDetails) && Context.Environment.IsDevelopment())
+                    {
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">Exception Details</h6>
+                            </div>
+                            <div class="card-body">
+                                <pre class="mb-0"><code>@Model.ExceptionDetails</code></pre>
+                            </div>
                         </div>
                     }
 
@@ -27,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="card mt-4 shadow-sm">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <h3 class="h5 mb-3">What can you do?</h3>
                     <ul class="list-unstyled">
