@@ -1,4 +1,5 @@
 @model EmailManagement.Models.ErrorViewModel
+@inject Microsoft.Extensions.Hosting.IHostEnvironment HostEnvironment
 @{
     ViewData["Title"] = "Error";
 }
@@ -29,7 +30,7 @@
                         </div>
                     }
 
-                    @if (!string.IsNullOrEmpty(Model.ExceptionDetails) && Context.Environment.IsDevelopment())
+                    @if (!string.IsNullOrEmpty(Model.ExceptionDetails) && HostEnvironment.IsDevelopment())
                     {
                         <div class="card mt-4">
                             <div class="card-header">
