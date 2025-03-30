@@ -1,0 +1,178 @@
+@model IEnumerable<EmailManagement.Models.Email>
+@{
+    ViewData["Title"] = "Emails";
+}
+
+<div class="container fade-in">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Email Management</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Add New Email
+        </a>
+    </div>
+
+    <!-- Search Panel -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-4">Search Filters</h5>
+            <form asp-action="Index" method="get" class="row g-3">
+                <!-- Email ID Search -->
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="searchEmail" name="searchEmail" 
+                               placeholder="Search by Email ID" value="@Context.Request.Query["searchEmail"]">
+                        <label for="searchEmail">Email ID</label>
+                    </div>
+                </div>
+
+                <!-- Tab Group Search -->
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="searchTabGroup" name="searchTabGroup" 
+                               placeholder="Search by Tab Group" value="@Context.Request.Query["searchTabGroup"]">
+                        <label for="searchTabGroup">Tab Group</label>
+                    </div>
+                </div>
+
+                <!-- Tag Search -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" id="searchTagId" name="searchTagId">
+                            <option value="">All Tags</option>
+                            @foreach (var tag in ViewBag.Tags)
+                            {
+                                <option value="@tag.TagId" 
+                                    selected="@(Context.Request.Query["searchTagId"] == tag.TagId.ToString())">
+                                    @tag.TagName
+                                </option>
+                            }
+                        </select>
+                        <label for="searchTagId">Tag</label>
+                    </div>
+                </div>
+
+                <!-- Browser Group Search -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" id="searchBrowserGroupId" name="searchBrowserGroupId">
+                            <option value="">All Browser Groups</option>
+                            @foreach (var browserGroup in ViewBag.BrowserGroups)
+                            {
+                                <option value="@browserGroup.BrowserGroupId" 
+                                    selected="@(Context.Request.Query["searchBrowserGroupId"] == browserGroup.BrowserGroupId.ToString())">
+                                    @browserGroup.BrowserGroupName
+                                </option>
+                            }
+                        </select>
+                        <label for="searchBrowserGroupId">Browser Group</label>
+                    </div>
+                </div>
+
+                <!-- Use Case Search -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" id="searchUseCaseId" name="searchUseCaseId">
+                            <option value="">All Use Cases</option>
+                            @foreach (var useCase in ViewBag.UseCases)
+                            {
+                                <option value="@useCase.UseCaseId" 
+                                    selected="@(Context.Request.Query["searchUseCaseId"] == useCase.UseCaseId.ToString())">
+                                    @useCase.UseCaseName
+                                </option>
+                            }
+                        </select>
+                        <label for="searchUseCaseId">Use Case</label>
+                    </div>
+                </div>
+
+                <!-- Search Buttons -->
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-undo me-2"></i>Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Email ID</th>
+                            <th>Name</th>
+                            <th>Tab Group</th>
+                            <th>Tags</th>
+                            <th>Browser Groups</th>
+                            <th>Use Cases</th>
+                            <th>Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.EmailId</td>
+                                <td>@item.FirstName @item.LastName</td>
+                                <td>@item.TabGroup</td>
+                                <td>
+                                    @foreach (var emailTag in item.EmailTags)
+                                    {
+                                        <span class="badge bg-info me-1">@emailTag.Tag.TagName</span>
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var emailBrowserGroup in item.EmailBrowserGroups)
+                                    {
+                                        <span class="badge bg-success me-1">@emailBrowserGroup.BrowserGroup.BrowserGroupName</span>
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var emailUseCase in item.EmailUseCases)
+                                    {
+                                        <span class="badge bg-warning me-1">@emailUseCase.UseCase.UseCaseName</span>
+                                    }
+                                </td>
+                                <td>@item.UpdatedAt.ToString("g")</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.EmailId" 
+                                           class="btn btn-sm btn-outline-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.EmailId" 
+                                           class="btn btn-sm btn-outline-info" title="Details">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.EmailId" 
+                                           class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Enable Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
