@@ -71,7 +71,7 @@
                                             <input type="checkbox" class="form-check-input" 
                                                    name="selectedTags" value="@tag.TagId" 
                                                    id="tag_@tag.TagId"
-                                                   @(selectedTags != null && selectedTags.AsEnumerable().Contains(tag.TagId) ? "checked" : "") />
+                                                   @(selectedTags != null && Array.Exists(selectedTags, id => id == tag.TagId) ? "checked" : "") />
                                             <label class="form-check-label" for="tag_@tag.TagId">
                                                 @tag.TagName
                                             </label>
@@ -92,7 +92,7 @@
                                             <input type="checkbox" class="form-check-input" 
                                                    name="selectedBrowserGroups" value="@browserGroup.BrowserGroupId" 
                                                    id="browserGroup_@browserGroup.BrowserGroupId"
-                                                   @(selectedBrowserGroups != null && selectedBrowserGroups.AsEnumerable().Contains(browserGroup.BrowserGroupId) ? "checked" : "") />
+                                                   @(selectedBrowserGroups != null && Array.Exists(selectedBrowserGroups, id => id == browserGroup.BrowserGroupId) ? "checked" : "") />
                                             <label class="form-check-label" for="browserGroup_@browserGroup.BrowserGroupId">
                                                 @browserGroup.BrowserGroupName
                                             </label>
@@ -113,7 +113,7 @@
                                             <input type="checkbox" class="form-check-input" 
                                                    name="selectedUseCases" value="@useCase.UseCaseId" 
                                                    id="useCase_@useCase.UseCaseId"
-                                                   @(selectedUseCases != null && selectedUseCases.AsEnumerable().Contains(useCase.UseCaseId) ? "checked" : "") />
+                                                   @(selectedUseCases != null && Array.Exists(selectedUseCases, id => id == useCase.UseCaseId) ? "checked" : "") />
                                             <label class="form-check-label" for="useCase_@useCase.UseCaseId">
                                                 @useCase.UseCaseName
                                             </label>
