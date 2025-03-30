@@ -15,17 +15,23 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
+        try
+        {
+            _logger.LogInformation("Accessing home page");
+            return View();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while accessing home page");
+            return RedirectToAction(nameof(Error));
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        _logger.LogError("Error page accessed with RequestId: {RequestId}", requestId);
+        return View(new ErrorViewModel { RequestId = requestId });
     }
 }
